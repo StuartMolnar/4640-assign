@@ -37,5 +37,5 @@ resource "digitalocean_droplet" "bastion" {
 # Add bastion to existing 4640_labs project
 resource "digitalocean_project_resources" "project_attach_bastion" {
     project = data.digitalocean_project.lab_project.id
-    resources = digitalocean_droplet.bastion.urn
+    resources = [digitalocean_droplet.bastion.urn]
 }
