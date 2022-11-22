@@ -8,7 +8,7 @@
 Initialize a git repository in ```~/``` with the following file:
 - .gitignore
 
-Add the followwing folder to the git repository:
+Add the following <b>folder</b> to the git repository:
 - dev
 
 Add the following files inside of /dev:
