@@ -10,7 +10,7 @@ resource "digitalocean_firewall" "bastion" {
   inbound_rule {
     protocol = "tcp"
     port_range = "22"
-    source_addresses = ["0.0.0.0/0", "::/0"]
+    source_addresses = var.destination_addresses
   }
 
   outbound_rule {
@@ -32,4 +32,10 @@ resource "digitalocean_droplet" "bastion" {
   size     = "s-1vcpu-512mb-10gb"
   ssh_keys = [data.digitalocean_ssh_key.my_key.id]
   vpc_uuid = digitalocean_vpc.web_vpc.id
+}
+
+# Add bastion to existing 4640_labs project
+resource "digitalocean_project_resources" "project_attach" {
+    project = data.digitalocean_project.lab_project.id
+    resources = digitalocean_droplet.bastion.urn
 }

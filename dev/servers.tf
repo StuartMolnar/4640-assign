@@ -10,13 +10,13 @@ resource "digitalocean_firewall" "web" {
     # Internal VPC Rules. We have to let ourselves talk to each other
     inbound_rule {
         protocol = "tcp"
-        port_range = "1-65535"
+        port_range = var.port_range
         source_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     inbound_rule {
         protocol = "udp"
-        port_range = "1-65535"
+        port_range = var.port_range
         source_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
@@ -27,13 +27,13 @@ resource "digitalocean_firewall" "web" {
 
     outbound_rule {
         protocol = "udp"
-        port_range = "1-65535"
+        port_range = var.port_range
         destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     outbound_rule {
         protocol = "tcp"
-        port_range = "1-65535"
+        port_range = var.port_range
         destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
@@ -48,20 +48,20 @@ resource "digitalocean_firewall" "web" {
     outbound_rule {
         protocol = "tcp"
         port_range = "80"
-        destination_addresses = ["0.0.0.0/0", "::/0"]
+        destination_addresses = var.destination_addresses
     }
 
     # HTTPS
     outbound_rule {
         protocol = "tcp"
         port_range = "443"
-        destination_addresses = ["0.0.0.0/0", "::/0"]
+        destination_addresses = var.destination_addresses
     }
 
     # ICMP (Ping)
     outbound_rule {
         protocol              = "icmp"
-        destination_addresses = ["0.0.0.0/0", "::/0"]
+        destination_addresses = var.destination_addresses
     }
 }
 
