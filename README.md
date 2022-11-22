@@ -23,7 +23,7 @@ Create a DigitalOcean API Token and keep track of its authentication string for 
 
 <h4>Next</h4>
 
-Open your ```.env``` file at ```~/<gitrepo>``` and put:
+Open your <code>.env</code> file at ```~/<gitrepo>``` and put:
 ```
 export TF_VAR_do_token=<your token authentication string>
 ```
