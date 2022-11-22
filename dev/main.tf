@@ -63,7 +63,7 @@ resource "digitalocean_firewall" "web" {
     outbound_rule {
         protocol = "udp"
         port_range = "1-65535"
-        destination_addresses = [digitalocean_vpc.web_vpceb.ip_range]
+        destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     outbound_rule {
