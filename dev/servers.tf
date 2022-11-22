@@ -82,7 +82,7 @@ resource "digitalocean_droplet" "web" {
 }
 
 # Add new web droplets to existing 4640_labs project
-resource "digitalocean_project_resources" "project_attach" {
+resource "digitalocean_project_resources" "project_attach_servers" {
     project = data.digitalocean_project.lab_project.id
     resources = flatten([digitalocean_droplet.web.*.urn]) 
 }
