@@ -1,6 +1,6 @@
 <b>Assumptions:</b>
 - terraform is installed 
-- SSH key named "my_key" attached to DigitalOcean account (or edit line 21 in main.tf)
+- SSH key named "my_key" attached to DigitalOcean account (or edit line 16 in main.tf)
 - project named 4640_labs exists
 
 <h4>First</h4>
