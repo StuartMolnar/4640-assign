@@ -38,7 +38,7 @@ In command line at ```~/<gitrepo>/dev``` enter: <code>terraform init</code>
 
 <h4>Next</h4>
 
-Open <b>main.tf</b>at ```~/<gitrepo>/dev/main.tf``` and put:
+Open <b>main.tf</b> at ```~/<gitrepo>/dev/main.tf``` and put:
 
 
 <details>
