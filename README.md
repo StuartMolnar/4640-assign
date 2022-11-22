@@ -14,8 +14,8 @@ Add the followwing folder to the git repository:
 Add the following files inside of /dev:
 - .env
 - main.tf
-terraform.tvars
-variables.tf
+- terraform.tvars
+- variables.tf
 
 <h4>Next</h4>
 
@@ -23,29 +23,29 @@ Create a DigitalOcean API Token and keep track of its authentication string for 
 
 <h4>Next</h4>
 
-Open your ```.env``` file at ```~/<gitrepo>``` and put:
+Open your .env file at ```~/<gitrepo>/dev/.env``` and put:
 ```
 export TF_VAR_do_token=<your token authentication string>
 ```
 
 <h4>Next</h4>
 
-In the command line at ```~/<gitrepo>``` enter: ```source .env```
+In the command line at ```~/<gitrepo>/dev``` enter: <code>source .env</code>
 
 <h4>Next</h4>
 
-In command line at ```~/<gitrepo>``` enter: ```terraform init```
+In command line at ```~/<gitrepo>/dev``` enter: <code>terraform init</code>
 
 <h4>Next</h4>
 
-Open your ```main.tf``` file at ```~/<gitrepo>``` and put:
+Open main.tf at ```~/<gitrepo>/dev/main.tf``` and put:
 
 
 <details>
     <summary>
         main.tf
     </summary>
-    
+
     terraform {
         required_providers {
             digitalocean = {
@@ -84,10 +84,10 @@ Open your ```main.tf``` file at ```~/<gitrepo>``` and put:
     # Create firewall for droplets 
     resource "digitalocean_firewall" "web" {
 
-        # The name we give our firewall for ease of use                            #    
+        # The name we give our firewall for ease of use                               
         name = "web-firewall"
 
-        # The droplets to apply this firewall to                                   #
+        # The droplets to apply this firewall to                                   
         droplet_ids = digitalocean_droplet.web.*.id
 
         # Internal VPC Rules. We have to let ourselves talk to each other
@@ -257,7 +257,32 @@ Open your ```main.tf``` file at ```~/<gitrepo>``` and put:
 
 <h4>Next</h4>
 
-In ```~/<gitrepo>``` enter: ```terraform apply```
+In terraform.tfvars at ```~/<gitrepo>/dev/terraform.tvars``` enter:
+<code>
+    droplet_count = 3
+</code>
+
+<h4>Next</h4>
+
+In variables.tf at ```~/<gitrepo>/dev/variables.tf``` enter:
+<code>
+    variable "do_token" {}
+
+    variable "region" {
+        type = string
+        default = "sfo3"
+    }
+
+    variable "droplet_count" {
+        type = number
+        default = 2
+    }
+</code>
+
+
+<h4>Next</h4>
+
+In ```~/<gitrepo>/dev``` enter: <code>terraform apply</code>
 
 
 
