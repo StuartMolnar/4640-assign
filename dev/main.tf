@@ -46,35 +46,35 @@ resource "digitalocean_firewall" "web" {
     inbound_rule {
         protocol = "tcp"
         port_range = "1-65535"
-        source_addresses = [digitalocean_vpc.web.ip_range]
+        source_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     inbound_rule {
         protocol = "udp"
         port_range = "1-65535"
-        source_addresses = [digitalocean_vpc.web.ip_range]
+        source_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     inbound_rule {
         protocol = "icmp"
-        source_addresses = [digitalocean_vpc.web.ip_range]
+        source_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     outbound_rule {
         protocol = "udp"
         port_range = "1-65535"
-        destination_addresses = [digitalocean_vpc.web.ip_range]
+        destination_addresses = [digitalocean_vpc.wweb_vpceb.ip_range]
     }
 
     outbound_rule {
         protocol = "tcp"
         port_range = "1-65535"
-        destination_addresses = [digitalocean_vpc.web.ip_range]
+        destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     outbound_rule {
         protocol = "icmp"
-        destination_addresses = [digitalocean_vpc.web.ip_range]
+        destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
     }
 
     # Selective Outbound Traffic Rules
