@@ -42,7 +42,7 @@ Open your ```main.tf``` file at ```~/<gitrepo>``` and put:
 
 <details>
     <code>
-    
+        <br>
         terraform {
         required_providers {
             digitalocean = {
@@ -251,6 +251,7 @@ Open your ```main.tf``` file at ```~/<gitrepo>``` and put:
         }
     </code>
 </details>
+<br>
 
 <h4>Next</h4>
 
