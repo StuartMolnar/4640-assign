@@ -19,7 +19,7 @@ Add the following files inside of /dev:
 
 <h4>Next</h4>
 
-Create a <b>DigitalOcean API Token/b> and keep track of its <b>authentication string</b> for the next task.
+Create a <b>DigitalOcean API Token</b> and keep track of its <b>authentication string</b> for the next task.
 
 <h4>Next</h4>
 
