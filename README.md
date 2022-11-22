@@ -45,6 +45,7 @@ Open your ```main.tf``` file at ```~/<gitrepo>``` and put:
     <summary>
         main.tf
     </summary>
+    
     terraform {
         required_providers {
             digitalocean = {
