@@ -11,7 +11,7 @@ Initialize a git repository in ```~/``` with the following file:
 Add the following <b>folder</b> to the git repository:
 - dev
 
-Add the following files inside of /dev:
+Add the following files inside of ```/dev```:
 - .env
 - main.tf
 - terraform.tvars
