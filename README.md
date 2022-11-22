@@ -19,7 +19,7 @@ Add the following files inside of /dev:
 
 <h4>Next</h4>
 
-Create a DigitalOcean API Token and keep track of its authentication string for the next task.
+Create a <b>DigitalOcean API Token/b> and keep track of its <b>authentication string</b> for the next task.
 
 <h4>Next</h4>
 
@@ -38,7 +38,7 @@ In command line at ```~/<gitrepo>/dev``` enter: <code>terraform init</code>
 
 <h4>Next</h4>
 
-Open main.tf at ```~/<gitrepo>/dev/main.tf``` and put:
+Open <b>main.tf</b>at ```~/<gitrepo>/dev/main.tf``` and put:
 
 
 <details>
@@ -257,7 +257,7 @@ Open main.tf at ```~/<gitrepo>/dev/main.tf``` and put:
 
 <h4>Next</h4>
 
-In terraform.tfvars at ```~/<gitrepo>/dev/terraform.tvars``` enter:
+In <b>terraform.tfvars</b> at ```~/<gitrepo>/dev/terraform.tvars``` enter:
 
 <details>
     <summary>
@@ -269,7 +269,7 @@ In terraform.tfvars at ```~/<gitrepo>/dev/terraform.tvars``` enter:
 
 <h4>Next</h4>
 
-In variables.tf at ```~/<gitrepo>/dev/variables.tf``` enter:
+In <b>variables.tf</b> at ```~/<gitrepo>/dev/variables.tf``` enter:
 
 <details>
     <summary>
