@@ -258,14 +258,24 @@ Open main.tf at ```~/<gitrepo>/dev/main.tf``` and put:
 <h4>Next</h4>
 
 In terraform.tfvars at ```~/<gitrepo>/dev/terraform.tvars``` enter:
-<code>
+
+<details>
+    <summary>
+        terraform.tvars
+    </summary>
+
     droplet_count = 3
-</code>
+</details
 
 <h4>Next</h4>
 
 In variables.tf at ```~/<gitrepo>/dev/variables.tf``` enter:
-<code>
+
+<details>
+    <summary>
+        variables.tf
+    </summary>
+    
     variable "do_token" {}
 
     variable "region" {
@@ -277,7 +287,7 @@ In variables.tf at ```~/<gitrepo>/dev/variables.tf``` enter:
         type = number
         default = 2
     }
-</code>
+</details
 
 
 <h4>Next</h4>
