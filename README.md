@@ -19,9 +19,7 @@ Add the following files inside of ```/dev```:
 
 <h4>Next</h4>
 
-Create a <b>DigitalOcean API Token</b> and keep track of its <b>authentication string</b> for the next task.
-
-<h4>Next</h4>
+Create a <b>DigitalOcean API Token</b> and keep track of its <b>authentication string</b>.
 
 Open your .env file at ```~/<gitrepo>/dev/.env``` and put:
 ```
@@ -208,10 +206,10 @@ Open <b>servers.tf</b> at ```~/<gitrepo>/dev/servers.tf``` and put:
     # Create firewall for droplets 
     resource "digitalocean_firewall" "web" {
 
-        # The name we give our firewall for ease of use                            #    
+        # The name we give our firewall for ease of use                               
         name = "web-firewall"
 
-        # The droplets to apply this firewall to                                   #
+        # The droplets to apply this firewall to                                   
         droplet_ids = digitalocean_droplet.web.*.id
 
         # Internal VPC Rules. We have to let ourselves talk to each other
