@@ -46,20 +46,6 @@ Open <b>main.tf</b> at ```~/<gitrepo>/dev/main.tf``` and put:
         main.tf
     </summary>
 
-    
-
-</details>
-
-<h4>Next</h4>
-
-Open <b>main.tf</b> at ```~/<gitrepo>/dev/main.tf``` and put:
-
-
-<details>
-    <summary>
-        main.tf
-    </summary>
-
     terraform {
         required_providers {
             digitalocean = {
@@ -83,7 +69,7 @@ Open <b>bastion.tf</b> at ```~/<gitrepo>/dev/bastion.tf``` and put:
 
 <details>
     <summary>
-        main.tf
+        bastion.tf
     </summary>
 
     # firewall for bastion server
@@ -132,45 +118,218 @@ Open <b>bastion.tf</b> at ```~/<gitrepo>/dev/bastion.tf``` and put:
 
 <h4>Next</h4>
 
-Open <b>main.tf</b> at ```~/<gitrepo>/dev/main.tf``` and put:
+Open <b>database.tf</b> at ```~/<gitrepo>/dev/database.tf``` and put:
 
 
 <details>
     <summary>
-        main.tf
+        database.tf
     </summary>
 
-    
+    # Create a database firewall
+    resource "digitalocean_database_firewall" "mongodb-firewall" {
+
+        cluster_id = digitalocean_database_cluster.mongodb-example.id
+        # allow connection from resources with a given tag
+        # for example if our droplets all have a tag "web" we could use web as the value
+        rule {
+            type  = "tag"
+            value = "web"
+        }
+    }
+
+    # Create a database
+    resource "digitalocean_database_cluster" "mongodb-example" {
+        name       = "example-mongo-cluster"
+        engine     = "mongodb"
+        version    = "4"
+        size       = "db-s-1vcpu-1gb"
+        region     = var.region
+        node_count = 1
+
+        private_network_uuid = digitalocean_vpc.web_vpc.id
+    }
 
 </details>
 
 <h4>Next</h4>
 
-Open <b>main.tf</b> at ```~/<gitrepo>/dev/main.tf``` and put:
+Open <b>data.tf</b> at ```~/<gitrepo>/dev/data.tf``` and put:
 
 
 <details>
     <summary>
-        main.tf
+        data.tf
     </summary>
 
-    
+    # Set the SSH key used
+    data "digitalocean_ssh_key" "my_key" {
+        name = "my_key"
+    }
+
+    # Set the project used
+    data "digitalocean_project" "lab_project" {
+        name = "4640_labs"
+    }
+
+    # Create a new tag
+    resource "digitalocean_tag" "do_tag" {
+        name = "Web"
+    }
 
 </details>
 
 <h4>Next</h4>
 
-Open <b>main.tf</b> at ```~/<gitrepo>/dev/main.tf``` and put:
-
+Open <b>network.tf</b> at ```~/<gitrepo>/dev/network.tf``` and put:
 
 <details>
     <summary>
-        main.tf
+        network.tf
     </summary>
 
-    
+    # Create a new VPC
+    resource "digitalocean_vpc" "web_vpc" {
+        name   = "web"
+        region = var.region
+    }
 
 </details>
+
+<h4>Next</h4>
+
+Open <b>servers.tf</b> at ```~/<gitrepo>/dev/servers.tf``` and put:
+
+<details>
+    <summary>
+        servers.tf
+    </summary>
+
+    # Create firewall for droplets 
+    resource "digitalocean_firewall" "web" {
+
+        # The name we give our firewall for ease of use                            #    
+        name = "web-firewall"
+
+        # The droplets to apply this firewall to                                   #
+        droplet_ids = digitalocean_droplet.web.*.id
+
+        # Internal VPC Rules. We have to let ourselves talk to each other
+        inbound_rule {
+            protocol = "tcp"
+            port_range = var.port_range
+            source_addresses = [digitalocean_vpc.web_vpc.ip_range]
+        }
+
+        inbound_rule {
+            protocol = "udp"
+            port_range = var.port_range
+            source_addresses = [digitalocean_vpc.web_vpc.ip_range]
+        }
+
+        inbound_rule {
+            protocol = "icmp"
+            source_addresses = [digitalocean_vpc.web_vpc.ip_range]
+        }
+
+        outbound_rule {
+            protocol = "udp"
+            port_range = var.port_range
+            destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
+        }
+
+        outbound_rule {
+            protocol = "tcp"
+            port_range = var.port_range
+            destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
+        }
+
+        outbound_rule {
+            protocol = "icmp"
+            destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
+        }
+
+        # Selective Outbound Traffic Rules
+
+        # HTTP
+        outbound_rule {
+            protocol = "tcp"
+            port_range = "80"
+            destination_addresses = var.destination_addresses
+        }
+
+        # HTTPS
+        outbound_rule {
+            protocol = "tcp"
+            port_range = "443"
+            destination_addresses = var.destination_addresses
+        }
+
+        # ICMP (Ping)
+        outbound_rule {
+            protocol              = "icmp"
+            destination_addresses = var.destination_addresses
+        }
+    }
+
+    # Create droplets
+    resource "digitalocean_droplet" "web" {
+        image    = "rockylinux-9-x64"
+        count    = var.droplet_count
+        name     = "web-${count.index + 1}"
+        tags     = [digitalocean_tag.do_tag.id]
+        region   = var.region
+        size     = "s-1vcpu-512mb-10gb"
+        vpc_uuid = digitalocean_vpc.web_vpc.id
+        ssh_keys = [data.digitalocean_ssh_key.my_key.id]
+
+        lifecycle {
+            create_before_destroy = true
+        }
+    }
+
+    # Add new web droplets to existing 4640_labs project
+    resource "digitalocean_project_resources" "project_attach_servers" {
+        project = data.digitalocean_project.lab_project.id
+        resources = flatten([digitalocean_droplet.web.*.urn]) 
+    }
+
+    # Create load balancer for droplets
+    resource "digitalocean_loadbalancer" "public" {
+        name = "loadbalancer-1"
+        region = var.region
+
+        forwarding_rule {
+            entry_port     = 80
+            entry_protocol = "http"
+
+            target_port     = 80
+            target_protocol = "http"
+        }
+
+        healthcheck {
+            port     = 22
+            protocol = "tcp"
+        }
+
+        droplet_tag = "Web"
+        vpc_uuid = digitalocean_vpc.web_vpc.id
+    }
+
+
+</details>
+
+<h4>Next</h4>
+
+In <b>terraform.tfvars</b> at ```~/<gitrepo>/dev/terraform.tvars``` enter:
+
+<details>
+    <summary>
+        terraform.tvars
+    </summary>
+
+    droplet_count = 3
+</details
 
 <h4>Next</h4>
 
