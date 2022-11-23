@@ -1,3 +1,4 @@
+/*
 # Create a database firewall
 resource "digitalocean_database_firewall" "mongodb-firewall" {
 
@@ -21,5 +22,4 @@ resource "digitalocean_database_cluster" "mongodb-example" {
 
   private_network_uuid = digitalocean_vpc.web_vpc.id
 }
-
-
+*/

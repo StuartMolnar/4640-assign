@@ -1,3 +1,4 @@
+/*
 # Set the SSH key used
 data "digitalocean_ssh_key" "my_key" {
   name = "my_key"
@@ -12,3 +13,4 @@ data "digitalocean_project" "lab_project" {
 resource "digitalocean_tag" "do_tag" {
   name = "Web"
 }
+*/
