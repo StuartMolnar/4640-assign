@@ -331,18 +331,6 @@ In <b>terraform.tfvars</b> at ```~/<gitrepo>/dev/terraform.tvars``` enter:
 
 <h4>Next</h4>
 
-In <b>terraform.tfvars</b> at ```~/<gitrepo>/dev/terraform.tvars``` enter:
-
-<details>
-    <summary>
-        terraform.tvars
-    </summary>
-
-    droplet_count = 3
-</details
-
-<h4>Next</h4>
-
 In <b>variables.tf</b> at ```~/<gitrepo>/dev/variables.tf``` enter:
 
 <details>
