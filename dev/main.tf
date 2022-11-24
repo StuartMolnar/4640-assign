@@ -103,7 +103,8 @@ output "host" {
   value = digitalocean_database_db.database-example.id
 }
 
+/*
 output "password" {
   value = digitalocean_database_db.database-example.passwords
 }
-
+*/
