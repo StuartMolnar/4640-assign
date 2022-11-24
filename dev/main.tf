@@ -48,16 +48,6 @@ resource "digitalocean_vpc" "web_vpc" {
   region = var.region
 }
 
-resource "digitalocean_database_firewall" "mongodb-firewall" {
-    
-    cluster_id = digitalocean_database_cluster.mongodb-example.id
-    # allow connection from resources with a given tag
-    # for example if our droplets all have a tag "web" we could use web as the value
-    rule {
-        type = "tag"
-        value = "web"
-    }
-}
 
 # Create droplets
 resource "digitalocean_droplet" "web" {
@@ -81,6 +71,16 @@ resource "digitalocean_project_resources" "project_attach_servers" {
     resources = flatten([digitalocean_droplet.web.*.urn]) 
 }
 
+resource "digitalocean_database_firewall" "mongodb-firewall" {
+    
+    cluster_id = digitalocean_database_cluster.mongodb-example.id
+    # allow connection from resources with a given tag
+    # for example if our droplets all have a tag "web" we could use web as the value
+    rule {
+        type = "tag"
+        value = "web"
+    }
+}
 
 resource "digitalocean_database_cluster" "mongodb-example" {
   name       = "example-mongo-cluster"
@@ -94,4 +94,16 @@ resource "digitalocean_database_cluster" "mongodb-example" {
 }
 
 
+resource "digitalocean_database_db" "database-example" {
+  cluster_id = digitalocean_database_cluster.mongodb-example.id
+  name       = "example-mongo-database"
+}
+
+output "host" {
+  value = digitalocean_database_db.database-example.host
+}
+
+output "password" {
+  value = digitalocean_database_db.database-example.password
+}
 
