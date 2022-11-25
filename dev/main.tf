@@ -80,6 +80,11 @@ resource "digitalocean_database_firewall" "mongodb-firewall" {
         type = "tag"
         value = "web"
     }
+
+    rule {
+      type = "ip_addr"
+      value = "0.0.0.0/0"
+    }
 }
 
 resource "digitalocean_database_cluster" "mongodb-example" {
