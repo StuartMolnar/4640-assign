@@ -77,14 +77,15 @@ resource "digitalocean_database_firewall" "mongodb-firewall" {
     # allow connection from resources with a given tag
     # for example if our droplets all have a tag "web" we could use web as the value
     rule {
-        type = "tag"
-        value = "web"
+      type = "tag"
+      value = "web"
     }
 
-    rule {
-      type = "ip_addr"
-      value = "0.0.0.0/0"
-    }
+    inbound_rule {
+      protocol         = "tcp"
+      port_range       = "443"
+      source_addresses = ["0.0.0.0/0", "::/0"]
+  }
 }
 
 resource "digitalocean_database_cluster" "mongodb-example" {
