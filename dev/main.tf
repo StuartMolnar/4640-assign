@@ -81,11 +81,10 @@ resource "digitalocean_database_firewall" "mongodb-firewall" {
       value = "web"
     }
 
-    inbound_rule {
-      protocol         = "tcp"
-      port_range       = "443"
-      source_addresses = ["0.0.0.0/0", "::/0"]
-  }
+    rule {
+      type  = "ip_addr"
+      value = "0.0.0.0"
+    }
 }
 
 resource "digitalocean_database_cluster" "mongodb-example" {
