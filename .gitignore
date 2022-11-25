@@ -3,3 +3,5 @@
 *.tfstate.backup
 .env
 output.tf
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
