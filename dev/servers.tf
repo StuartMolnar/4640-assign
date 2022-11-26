@@ -1,4 +1,4 @@
-/*# Create firewall for droplets 
+# Create firewall for droplets 
 resource "digitalocean_firewall" "web" {
 
     # The name we give our firewall for ease of use                            #    
@@ -108,4 +108,3 @@ resource "digitalocean_loadbalancer" "public" {
   droplet_tag = "Web"
   vpc_uuid = digitalocean_vpc.web_vpc.id
 }
-*/

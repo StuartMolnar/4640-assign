@@ -1,4 +1,4 @@
-/*# firewall for bastion server
+# firewall for bastion server
 resource "digitalocean_firewall" "bastion" {
   
   #firewall name
@@ -38,4 +38,4 @@ resource "digitalocean_droplet" "bastion" {
 resource "digitalocean_project_resources" "project_attach_bastion" {
     project = data.digitalocean_project.lab_project.id
     resources = [digitalocean_droplet.bastion.urn]
-}*/
+}

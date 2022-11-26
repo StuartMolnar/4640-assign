@@ -1,17 +1,15 @@
-/*
-# Create a database firewall
-resource "digitalocean_database_firewall" "mongodb-firewall" {
-
-  cluster_id = digitalocean_database_cluster.mongodb-example.id
-  # allow connection from resources with a given tag
-  # for example if our droplets all have a tag "web" we could use web as the value
-  rule {
-    type  = "tag"
-    value = "web"
-  }
+/*resource "digitalocean_database_firewall" "mongodb-firewall" {
+    
+    cluster_id = digitalocean_database_cluster.mongodb-example.id
+    # allow connection from resources with a given tag
+    # for example if our droplets all have a tag "web" we could use web as the value
+    rule {
+      type = "tag"
+      value = "web"
+    }
 }
 
-# Create a database
+
 resource "digitalocean_database_cluster" "mongodb-example" {
   name       = "example-mongo-cluster"
   engine     = "mongodb"
@@ -22,4 +20,9 @@ resource "digitalocean_database_cluster" "mongodb-example" {
 
   private_network_uuid = digitalocean_vpc.web_vpc.id
 }
-*/
+
+
+resource "digitalocean_database_db" "database-example" {
+  cluster_id = digitalocean_database_cluster.mongodb-example.id
+  name       = "example-mongo-database"
+}*/
