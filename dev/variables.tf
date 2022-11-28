@@ -20,12 +20,12 @@ variable "port_range" {
     default = "1-65535"
 }
 
-varible "default_droplet_image" {
+variable "default_droplet_image" {
     type = string
     default = "rockylinux-9-x64"
 }
 
-varible "default_droplet_size" {
+variable "default_droplet_size" {
     type = string
     default = "s-1vcpu-512mb-10gb"
 }
