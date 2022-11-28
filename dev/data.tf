@@ -10,5 +10,5 @@ data "digitalocean_project" "lab_project" {
 
 # Create a new tag
 resource "digitalocean_tag" "do_tag" {
-  name = "Web"
+  name = var.do_tag_name
 }

@@ -11,9 +11,3 @@ terraform {
 provider "digitalocean" {
   token = var.do_token
 }
-
-/*
-output "password" {
-  value = digitalocean_database_db.database-example.passwords
-}
-*/

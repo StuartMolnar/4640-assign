@@ -1,6 +1,7 @@
 <b>Assumptions:</b>
 - terraform is installed 
 - SSH key named "my_key" attached to DigitalOcean account (or edit line 16 in main.tf)
+- SSH key has correct permissions (chmod 400 or 600)
 - project named 4640_labs exists
 
 <h4>First</h4>
@@ -71,8 +72,10 @@ Open <b>bastion.tf</b> at ```~/<gitrepo>/dev/bastion.tf``` and put:
     </summary>
 
     # firewall for bastion server
-    resource "digitalocean_firewall" "bastion" {
-    
+
+
+        resource "digitalocean_firewall" "bastion" {
+        
         #firewall name
         name = "ssh-bastion-firewall"
 
@@ -96,8 +99,9 @@ Open <b>bastion.tf</b> at ```~/<gitrepo>/dev/bastion.tf``` and put:
             destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
         }
     }
+
     # Create a bastion server
-    resource "digitalocean_droplet" "bastion" {
+        resource "digitalocean_droplet" "bastion" {
         image    = "rockylinux-9-x64"
         name     = "bastion-${var.region}"
         region   = var.region
@@ -124,19 +128,18 @@ Open <b>database.tf</b> at ```~/<gitrepo>/dev/database.tf``` and put:
         database.tf
     </summary>
 
-    # Create a database firewall
     resource "digitalocean_database_firewall" "mongodb-firewall" {
-
+        
         cluster_id = digitalocean_database_cluster.mongodb-example.id
-        # allow connection from resources with a given tag
-        # for example if our droplets all have a tag "web" we could use web as the value
-        rule {
-            type  = "tag"
-            value = "web"
+            # allow connection from resources with a given tag
+            # for example if our droplets all have a tag "web" we could use web as the value
+            rule {
+            type = "tag"
+            value = var.vpc_name
         }
     }
 
-    # Create a database
+
     resource "digitalocean_database_cluster" "mongodb-example" {
         name       = "example-mongo-cluster"
         engine     = "mongodb"
@@ -146,6 +149,12 @@ Open <b>database.tf</b> at ```~/<gitrepo>/dev/database.tf``` and put:
         node_count = 1
 
         private_network_uuid = digitalocean_vpc.web_vpc.id
+    }
+
+
+    resource "digitalocean_database_db" "database-example" {
+        cluster_id = digitalocean_database_cluster.mongodb-example.id
+        name       = "example-mongo-database"
     }
 
 </details>
@@ -172,8 +181,9 @@ Open <b>data.tf</b> at ```~/<gitrepo>/dev/data.tf``` and put:
 
     # Create a new tag
     resource "digitalocean_tag" "do_tag" {
-        name = "Web"
+        name = var.do_tag_name
     }
+
 
 </details>
 
@@ -188,7 +198,7 @@ Open <b>network.tf</b> at ```~/<gitrepo>/dev/network.tf``` and put:
 
     # Create a new VPC
     resource "digitalocean_vpc" "web_vpc" {
-        name   = "web"
+        name   = var.vpc_name
         region = var.region
     }
 
@@ -204,12 +214,13 @@ Open <b>servers.tf</b> at ```~/<gitrepo>/dev/servers.tf``` and put:
     </summary>
 
     # Create firewall for droplets 
-    resource "digitalocean_firewall" "web" {
 
-        # The name we give our firewall for ease of use                               
-        name = "web-firewall"
+    resource "digitalocean_firewall" vpc_name {
 
-        # The droplets to apply this firewall to                                   
+        # The name we give our firewall for ease of use                            #    
+        name = "${var.vpc_name}-firewall"
+
+        # The droplets to apply this firewall to                                   #
         droplet_ids = digitalocean_droplet.web.*.id
 
         # Internal VPC Rules. We have to let ourselves talk to each other
@@ -270,14 +281,15 @@ Open <b>servers.tf</b> at ```~/<gitrepo>/dev/servers.tf``` and put:
         }
     }
 
+
     # Create droplets
-    resource "digitalocean_droplet" "web" {
-        image    = "rockylinux-9-x64"
+    resource "digitalocean_droplet" vpc_name {
+        image    = var.default_droplet_image
         count    = var.droplet_count
-        name     = "web-${count.index + 1}"
+        name     = "${var.vpc_name}-${count.index + 1}"
         tags     = [digitalocean_tag.do_tag.id]
         region   = var.region
-        size     = "s-1vcpu-512mb-10gb"
+        size     = var.default_droplet_size
         vpc_uuid = digitalocean_vpc.web_vpc.id
         ssh_keys = [data.digitalocean_ssh_key.my_key.id]
 
@@ -310,9 +322,10 @@ Open <b>servers.tf</b> at ```~/<gitrepo>/dev/servers.tf``` and put:
             protocol = "tcp"
         }
 
-        droplet_tag = "Web"
+        droplet_tag = var.do_tag_name
         vpc_uuid = digitalocean_vpc.web_vpc.id
     }
+
 
 
 </details>
@@ -349,6 +362,37 @@ In <b>variables.tf</b> at ```~/<gitrepo>/dev/variables.tf``` enter:
         type = number
         default = 2
     }
+
+    variable "destination_addresses" {
+        type = list
+        default = ["0.0.0.0/0", "::/0"]
+    }
+
+    variable "port_range" {
+        type = string
+        default = "1-65535"
+    }
+
+    varible "default_droplet_image" {
+        type = string
+        default = "rockylinux-9-x64"
+    }
+
+    varible "default_droplet_size" {
+        type = string
+        default = "s-1vcpu-512mb-10gb"
+    }
+
+    variable "vpc_name" {
+        type = string
+        default = "web"
+    }
+
+    variable "do_tag_name" {
+        type = string
+        default = "Web"
+    }
+
 </details
 
 
