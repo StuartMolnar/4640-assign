@@ -21,7 +21,7 @@ Add the following files inside of ```/dev```:
 <h4>Next</h4>
 
 Open WSL in ```~/<gitrepo>/dev/.env``` and enter ```terraform init```
->
+
 <h4>Next</h4>
 
 Create a <b>DigitalOcean API Token</b> and keep track of its <b>authentication string</b>.
