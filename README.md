@@ -402,6 +402,10 @@ In ```~/<gitrepo>/dev``` enter: <code>terraform apply</code>
 
 <h4>Confirming Application Success</h4>
 
+<code>terraform apply</code> should have returned success and relevant information retrievable with <code>terraform output</code>.
+
+![alt text](./images/Success.png)
+
 Database should be accessible from local PC if we change firewall rules to be more permissive (otherwise should not be accessible)
 
 ![alt text](./images/Database.png)
