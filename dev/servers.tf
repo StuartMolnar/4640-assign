@@ -1,6 +1,6 @@
 # Create firewall for droplets 
 
-resource "digitalocean_firewall" vpc_name {
+resource "digitalocean_firewall" "web" {
 
     # The name we give our firewall for ease of use                            #    
     name = "${var.vpc_name}-firewall"
@@ -68,7 +68,7 @@ resource "digitalocean_firewall" vpc_name {
 
 
 # Create droplets
-resource "digitalocean_droplet" vpc_name {
+resource "digitalocean_droplet" "web" {
   image    = var.default_droplet_image
   count    = var.droplet_count
   name     = "${var.vpc_name}-${count.index + 1}"
