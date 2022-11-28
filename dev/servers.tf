@@ -1,9 +1,9 @@
 # Create firewall for droplets 
 
-resource "digitalocean_firewall" "web" {
+resource "digitalocean_firewall" vpc_name {
 
     # The name we give our firewall for ease of use                            #    
-    name = "web-firewall"
+    name = "${var.vpc_name}-firewall"
 
     # The droplets to apply this firewall to                                   #
     droplet_ids = digitalocean_droplet.web.*.id
@@ -68,13 +68,13 @@ resource "digitalocean_firewall" "web" {
 
 
 # Create droplets
-resource "digitalocean_droplet" "web" {
-  image    = "rockylinux-9-x64"
+resource "digitalocean_droplet" vpc_name {
+  image    = var.default_droplet_image
   count    = var.droplet_count
-  name     = "web-${count.index + 1}"
+  name     = "${var.vpc_name}-${count.index + 1}"
   tags     = [digitalocean_tag.do_tag.id]
   region   = var.region
-  size     = "s-1vcpu-512mb-10gb"
+  size     = var.default_droplet_size
   vpc_uuid = digitalocean_vpc.web_vpc.id
   ssh_keys = [data.digitalocean_ssh_key.my_key.id]
 
@@ -107,6 +107,6 @@ resource "digitalocean_loadbalancer" "public" {
     protocol = "tcp"
   }
 
-  droplet_tag = "Web"
+  droplet_tag = var.do_tag_name
   vpc_uuid = digitalocean_vpc.web_vpc.id
 }

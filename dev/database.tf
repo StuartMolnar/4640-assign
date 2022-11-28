@@ -1,11 +1,11 @@
-/*resource "digitalocean_database_firewall" "mongodb-firewall" {
+resource "digitalocean_database_firewall" "mongodb-firewall" {
     
     cluster_id = digitalocean_database_cluster.mongodb-example.id
     # allow connection from resources with a given tag
     # for example if our droplets all have a tag "web" we could use web as the value
     rule {
       type = "tag"
-      value = "web"
+      value = var.vpc_name
     }
 }
 
@@ -25,4 +25,4 @@ resource "digitalocean_database_cluster" "mongodb-example" {
 resource "digitalocean_database_db" "database-example" {
   cluster_id = digitalocean_database_cluster.mongodb-example.id
   name       = "example-mongo-database"
-}*/
+}
