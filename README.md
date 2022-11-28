@@ -400,5 +400,17 @@ In <b>variables.tf</b> at ```~/<gitrepo>/dev/variables.tf``` enter:
 
 In ```~/<gitrepo>/dev``` enter: <code>terraform apply</code>
 
+<h4>Confirming Application Success</h4>
+
+Database should be accessible from local PC if we change firewall rules to be more permissive (otherwise should not be accessible)
+
+![alt text](./images/Database.png)
+
+Bastion service should be accessible from local PC.
+
+![alt text](./images/Bastion.png)
+
+
+
 
 
