@@ -1,4 +1,5 @@
 # Create firewall for droplets 
+
 resource "digitalocean_firewall" "web" {
 
     # The name we give our firewall for ease of use                            #    
@@ -64,6 +65,7 @@ resource "digitalocean_firewall" "web" {
         destination_addresses = var.destination_addresses
     }
 }
+
 
 # Create droplets
 resource "digitalocean_droplet" "web" {

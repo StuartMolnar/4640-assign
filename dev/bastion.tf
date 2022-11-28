@@ -1,4 +1,6 @@
 # firewall for bastion server
+
+
 resource "digitalocean_firewall" "bastion" {
   
   #firewall name
@@ -24,6 +26,7 @@ resource "digitalocean_firewall" "bastion" {
     destination_addresses = [digitalocean_vpc.web_vpc.ip_range]
   }
 }
+
 # Create a bastion server
 resource "digitalocean_droplet" "bastion" {
   image    = "rockylinux-9-x64"
